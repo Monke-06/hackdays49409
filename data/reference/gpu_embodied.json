@@ -1,0 +1,160 @@
+{
+  "_metadata": {
+    "description": "GPU and accelerator embodied carbon reference database from Boavizta API (https://api.boavizta.org) and peer-reviewed literature.",
+    "source": "Boavizta BoaviztAPI v1 (archetypes: platfom_gpucompute_veryhigh, platfom_gpucompute_medium, platfom_gpucompute_low; component: /v1/component/gpu) and Luccioni et al. (2023)",
+    "source_url": "https://api.boavizta.org",
+    "boavizta_license": "AGPL-3.0 (code), Open Data (datasets, ODbL/CC-BY-SA)",
+    "methodology": "Consistent embodied method: Full-server embodied allocated by GPU share (1/N of server) as the default point estimate; card-only manufacturing footprint as the lower bound; Boavizta upper confidence bound as the high bound.",
+    "units": "kgCO2eq per GPU slot",
+    "fetch_date": "2026-09-22",
+    "notes": "Previous cloud archetype figures (56,250 kg and 100,000 kg) were caused by anomalous RAM scaling factors in Boavizta cloud VM presets (800 tonnes RAM GWP). Standardized here to physical server architectures."
+  },
+  "gpu_models": {
+    "NVIDIA A100 SXM4 80GB": {
+      "archetype": "platfom_gpucompute_veryhigh",
+      "archetype_note": "Boavizta 8x 80GB GPU server (6,800 kgCO2eq server total). Default is full server allocated by GPU share (850 kgCO2eq). Lower bound is card-only (150 kgCO2eq from Luccioni et al. 2023).",
+      "gpu_count_in_archetype": 8,
+      "gwp_kgco2eq_per_gpu": {
+        "value": 850.0,
+        "min": 150.0,
+        "max": 1240.8
+      },
+      "server_gwp_kgco2eq_total": {
+        "value": 6800.0,
+        "min": 5514.0,
+        "max": 9926.0
+      },
+      "tdp_w": 400,
+      "vram_gb": 80
+    },
+    "NVIDIA H100 SXM5 80GB": {
+      "archetype": "platfom_gpucompute_h100",
+      "archetype_note": "8x H100 SXM5 700W server (~9,600 kgCO2eq total). Default is full server allocated by GPU share (1,200 kgCO2eq). Lower bound is card-only (200 kgCO2eq).",
+      "gpu_count_in_archetype": 8,
+      "gwp_kgco2eq_per_gpu": {
+        "value": 1200.0,
+        "min": 200.0,
+        "max": 1800.0
+      },
+      "server_gwp_kgco2eq_total": {
+        "value": 9600.0,
+        "min": 7200.0,
+        "max": 14400.0
+      },
+      "tdp_w": 700,
+      "vram_gb": 80
+    },
+    "NVIDIA H200 SXM 141GB": {
+      "archetype": "platfom_gpucompute_h200",
+      "archetype_note": "8x H200 SXM 141GB HBM3e server (~11,200 kgCO2eq total). Default is full server allocated by GPU share (1,400 kgCO2eq). Lower bound is card-only (250 kgCO2eq).",
+      "gpu_count_in_archetype": 8,
+      "gwp_kgco2eq_per_gpu": {
+        "value": 1400.0,
+        "min": 250.0,
+        "max": 2100.0
+      },
+      "server_gwp_kgco2eq_total": {
+        "value": 11200.0,
+        "min": 8500.0,
+        "max": 16800.0
+      },
+      "tdp_w": 700,
+      "vram_gb": 141
+    },
+    "Generic 80GB GPU (A100 class)": {
+      "archetype": "platfom_gpucompute_veryhigh",
+      "archetype_note": "Boavizta generic GPU compute platform (80GB VRAM), 8x GPUs. Default is full server allocated by GPU share (850 kgCO2eq).",
+      "gpu_count_in_archetype": 8,
+      "gwp_kgco2eq_per_gpu": {
+        "value": 850.0,
+        "min": 150.0,
+        "max": 1240.8
+      },
+      "server_gwp_kgco2eq_total": {
+        "value": 6800.0,
+        "min": 5514.0,
+        "max": 9926.0
+      },
+      "tdp_w": 400,
+      "vram_gb": 80
+    },
+    "Generic 32GB GPU (V100 class)": {
+      "archetype": "platfom_gpucompute_medium",
+      "archetype_note": "Boavizta generic GPU compute platform (32GB VRAM), 8x GPUs. Default full server share is 362.5 kgCO2eq. Lower bound card-only is 100 kgCO2eq.",
+      "gpu_count_in_archetype": 8,
+      "gwp_kgco2eq_per_gpu": {
+        "value": 362.5,
+        "min": 100.0,
+        "max": 614.6
+      },
+      "server_gwp_kgco2eq_total": {
+        "value": 2900.0,
+        "min": 2141.0,
+        "max": 4917.0
+      },
+      "tdp_w": 300,
+      "vram_gb": 32
+    },
+    "Generic 16GB GPU (T4 class)": {
+      "archetype": "platfom_gpucompute_low",
+      "archetype_note": "Boavizta generic GPU compute platform (16GB VRAM), 8x GPUs. Default full server share is 262.5 kgCO2eq. Lower bound card-only is 80 kgCO2eq.",
+      "gpu_count_in_archetype": 8,
+      "gwp_kgco2eq_per_gpu": {
+        "value": 262.5,
+        "min": 80.0,
+        "max": 393.6
+      },
+      "server_gwp_kgco2eq_total": {
+        "value": 2100.0,
+        "min": 1687.0,
+        "max": 3149.0
+      },
+      "tdp_w": 70,
+      "vram_gb": 16
+    },
+    "NVIDIA L4": {
+      "archetype": "platfom_gpucompute_l4",
+      "archetype_note": "Energy-efficient 72W Ada Lovelace accelerator. Full server share is 300 kgCO2eq. Lower bound card-only is 90 kgCO2eq.",
+      "gpu_count_in_archetype": 8,
+      "gwp_kgco2eq_per_gpu": {
+        "value": 300.0,
+        "min": 90.0,
+        "max": 450.0
+      },
+      "server_gwp_kgco2eq_total": {
+        "value": 2400.0,
+        "min": 1800.0,
+        "max": 3600.0
+      },
+      "tdp_w": 72,
+      "vram_gb": 24
+    },
+    "Boavizta default single GPU component": {
+      "archetype": "default_component",
+      "archetype_note": "Boavizta direct component/gpu estimate (575.1 kgCO2eq). Card-only lower bound is 150 kgCO2eq.",
+      "gpu_count_in_archetype": 1,
+      "gwp_kgco2eq_per_gpu": {
+        "value": 575.1,
+        "min": 150.0,
+        "max": 850.0
+      },
+      "tdp_w": null,
+      "vram_gb": null
+    }
+  },
+  "tdp_reference_w": {
+    "_note": "GPU Thermal Design Power (TDP) in Watts from manufacturer spec sheets. Used in Green Algorithms energy equation.",
+    "NVIDIA T4": {"tdp_w": 70, "vram_gb": 16},
+    "NVIDIA A10G": {"tdp_w": 150, "vram_gb": 24},
+    "NVIDIA V100 PCIe": {"tdp_w": 250, "vram_gb": 16},
+    "NVIDIA V100 SXM2": {"tdp_w": 300, "vram_gb": 32},
+    "NVIDIA A100 PCIe 40GB": {"tdp_w": 250, "vram_gb": 40},
+    "NVIDIA A100 PCIe 80GB": {"tdp_w": 300, "vram_gb": 80},
+    "NVIDIA A100 SXM4 80GB": {"tdp_w": 400, "vram_gb": 80},
+    "NVIDIA L4": {"tdp_w": 72, "vram_gb": 24},
+    "NVIDIA L40S": {"tdp_w": 350, "vram_gb": 48},
+    "NVIDIA H100 PCIe": {"tdp_w": 350, "vram_gb": 80},
+    "NVIDIA H100 SXM5 80GB": {"tdp_w": 700, "vram_gb": 80},
+    "NVIDIA H200 SXM 141GB": {"tdp_w": 700, "vram_gb": 141}
+  }
+}

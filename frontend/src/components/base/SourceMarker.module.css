@@ -1,0 +1,36 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.02em;
+}
+
+.squareMarker {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-none); /* strictly square */
+  flex-shrink: 0;
+}
+
+.gemini {
+  background-color: var(--color-marker-gemini);
+}
+
+.rulesFallback {
+  background-color: var(--color-marker-rules);
+}
+
+.userSpecified {
+  background-color: var(--color-marker-user);
+}
+
+.text {
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+}

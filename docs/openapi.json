@@ -1,0 +1,1776 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Sustainable AI Lifecycle Auditor API",
+    "description": "Estimates lifecycle energy, carbon, and hardware footprint of AI systems.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Service health and capability reporting.",
+        "operationId": "health_check_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/regions": {
+      "get": {
+        "summary": "Get Regions",
+        "description": "List all supported geographical and cloud regions for grid carbon intensity.",
+        "operationId": "get_regions_api_v1_regions_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Response Get Regions Api V1 Regions Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/presets": {
+      "get": {
+        "summary": "Get Metadata And Presets",
+        "description": "Returns available models, hardware options, geographical regions,\nand preset scenarios (inputs only) so the frontend hardcodes nothing.",
+        "operationId": "get_metadata_and_presets_api_v1_presets_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/meta": {
+      "get": {
+        "summary": "Get Metadata And Presets",
+        "description": "Returns available models, hardware options, geographical regions,\nand preset scenarios (inputs only) so the frontend hardcodes nothing.",
+        "operationId": "get_metadata_and_presets_api_v1_meta_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ledger": {
+      "post": {
+        "summary": "Calculate Ledger",
+        "description": "Compute dual lifecycle ledgers (operational and full_lifecycle)\nfor a given AI system inventory.",
+        "operationId": "calculate_ledger_api_v1_ledger_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LedgerRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LedgerResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/claims/check": {
+      "post": {
+        "summary": "Check Efficiency Claim",
+        "description": "Audit an efficiency claim against baseline and subject ledgers\nusing the deterministic multi-tier verification cascade.",
+        "operationId": "check_efficiency_claim_api_v1_claims_check_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClaimToLedgerMapping"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Verdict"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/claims/extract": {
+      "post": {
+        "summary": "Extract Claim",
+        "description": "Extract a structured Claim object from free-text marketing copy,\nresearch papers, or model cards.",
+        "operationId": "extract_claim_api_v1_claims_extract_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractClaimRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Claim"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/recommend": {
+      "post": {
+        "summary": "Recommend Architectures",
+        "description": "Generate alternative architectures, evaluate full lifecycle ledgers,\nfilter constraints, and compute Pareto frontier.",
+        "operationId": "recommend_architectures_api_v1_recommend_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecommendRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParetoResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountingMethod": {
+        "type": "string",
+        "enum": [
+          "location",
+          "market"
+        ],
+        "title": "AccountingMethod"
+      },
+      "AccuracySource": {
+        "type": "string",
+        "enum": [
+          "user_sample_eval",
+          "cited_published_delta",
+          "not_available"
+        ],
+        "title": "AccuracySource",
+        "description": "How the accuracy estimate for a candidate was obtained."
+      },
+      "Boundary": {
+        "type": "string",
+        "enum": [
+          "operational",
+          "full_lifecycle"
+        ],
+        "title": "Boundary"
+      },
+      "BoundaryStated": {
+        "properties": {
+          "includes_training": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Includes Training"
+          },
+          "includes_embodied": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Includes Embodied"
+          },
+          "includes_retraining": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Includes Retraining"
+          },
+          "accounting": {
+            "type": "string",
+            "enum": [
+              "location",
+              "market",
+              "unspecified"
+            ],
+            "title": "Accounting",
+            "default": "unspecified"
+          }
+        },
+        "type": "object",
+        "title": "BoundaryStated"
+      },
+      "Claim": {
+        "properties": {
+          "claim_text": {
+            "type": "string",
+            "title": "Claim Text"
+          },
+          "metric": {
+            "type": "string",
+            "enum": [
+              "energy",
+              "carbon",
+              "latency",
+              "cost"
+            ],
+            "title": "Metric"
+          },
+          "claimed_change_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Claimed Change Pct"
+          },
+          "baseline_ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Baseline Ref"
+          },
+          "subject_ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Ref"
+          },
+          "boundary_stated": {
+            "$ref": "#/components/schemas/BoundaryStated"
+          },
+          "hardware": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hardware"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region"
+          },
+          "accuracy_change_reported": {
+            "type": "boolean",
+            "title": "Accuracy Change Reported",
+            "default": false
+          },
+          "accuracy_change_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accuracy Change Pct"
+          },
+          "source_type": {
+            "type": "string",
+            "enum": [
+              "vendor",
+              "paper",
+              "model_card",
+              "blog",
+              "unknown"
+            ],
+            "title": "Source Type",
+            "default": "unknown"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "extraction_source": {
+            "type": "string",
+            "enum": [
+              "gemini",
+              "rules_fallback",
+              "user_specified"
+            ],
+            "title": "Extraction Source",
+            "default": "user_specified"
+          }
+        },
+        "type": "object",
+        "required": [
+          "claim_text",
+          "metric",
+          "boundary_stated"
+        ],
+        "title": "Claim",
+        "description": "A structured efficiency claim extracted from free text or a model card.\n\nFields left None mean the information was absent or ambiguous in the source.\nNever guess missing boundary fields: leave them unspecified / None."
+      },
+      "ClaimToLedgerMapping": {
+        "properties": {
+          "claim": {
+            "$ref": "#/components/schemas/Claim"
+          },
+          "baseline_ledger": {
+            "$ref": "#/components/schemas/LifecycleLedger-Input"
+          },
+          "subject_ledger": {
+            "$ref": "#/components/schemas/LifecycleLedger-Input"
+          },
+          "baseline_ledger_full": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LifecycleLedger-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "subject_ledger_full": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LifecycleLedger-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "claim",
+          "baseline_ledger",
+          "subject_ledger"
+        ],
+        "title": "ClaimToLedgerMapping",
+        "description": "User-supplied mapping that links a Claim to computed LifecycleLedgers.\n\nCan supply both operational ledgers (baseline_ledger, subject_ledger)\nand full-lifecycle ledgers (baseline_ledger_full, subject_ledger_full).\nIf full-lifecycle ledgers are omitted, the checker uses baseline_ledger\nand subject_ledger under their native boundary."
+      },
+      "ExtractClaimRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "ExtractClaimRequest"
+      },
+      "GPUSpec": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "description": "GPU model string, e.g. 'NVIDIA A100 80GB SXM4'."
+          },
+          "count": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Count"
+          },
+          "tdp_w": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tdp W",
+            "description": "Thermal Design Power in Watts. If None, looked up from reference table. User-supplied value takes precedence."
+          }
+        },
+        "type": "object",
+        "required": [
+          "model",
+          "count"
+        ],
+        "title": "GPUSpec"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HardwareOption": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "tdp_w": {
+            "type": "number",
+            "title": "Tdp W"
+          },
+          "vram_gb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vram Gb"
+          }
+        },
+        "type": "object",
+        "required": [
+          "model",
+          "tdp_w"
+        ],
+        "title": "HardwareOption"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "gemini_available": {
+            "type": "boolean",
+            "title": "Gemini Available"
+          },
+          "gemini_model": {
+            "type": "string",
+            "title": "Gemini Model"
+          },
+          "regions_count": {
+            "type": "integer",
+            "title": "Regions Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "version",
+          "gemini_available",
+          "gemini_model",
+          "regions_count"
+        ],
+        "title": "HealthResponse"
+      },
+      "InferenceConfig": {
+        "properties": {
+          "gpu": {
+            "$ref": "#/components/schemas/GPUSpec"
+          },
+          "runtime_hours": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Runtime Hours",
+            "description": "Operational inference runtime hours (default 8760.0 = 1 year).",
+            "default": 8760.0
+          },
+          "batch_size": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Batch Size",
+            "default": 1
+          },
+          "requests_per_day": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Requests Per Day"
+          },
+          "avg_tokens_per_request": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Avg Tokens Per Request",
+            "default": 512
+          },
+          "p95_latency_limit_ms": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P95 Latency Limit Ms",
+            "description": "Hard latency constraint. Candidates exceeding this are excluded from Pareto."
+          }
+        },
+        "type": "object",
+        "required": [
+          "gpu",
+          "requests_per_day"
+        ],
+        "title": "InferenceConfig"
+      },
+      "LedgerAssumptions": {
+        "properties": {
+          "grid_intensity_gco2_per_kwh": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "pue": {
+            "type": "number",
+            "exclusiveMinimum": 1.0,
+            "title": "Pue",
+            "description": "Power Usage Effectiveness (>1.0)."
+          },
+          "pue_source": {
+            "type": "string",
+            "title": "Pue Source",
+            "description": "Where this PUE value came from."
+          },
+          "utilization": {
+            "type": "number",
+            "maximum": 1.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Utilization",
+            "description": "Fraction of peak TDP drawn."
+          },
+          "utilization_source": {
+            "type": "string",
+            "title": "Utilization Source"
+          },
+          "hardware_lifetime_years": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Hardware Lifetime Years"
+          },
+          "hardware_lifetime_source": {
+            "type": "string",
+            "title": "Hardware Lifetime Source"
+          },
+          "region": {
+            "type": "string",
+            "title": "Region"
+          },
+          "accounting": {
+            "$ref": "#/components/schemas/AccountingMethod"
+          },
+          "monte_carlo_n_samples": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Monte Carlo N Samples",
+            "default": 1000
+          },
+          "monte_carlo_seed": {
+            "type": "integer",
+            "title": "Monte Carlo Seed",
+            "default": 42
+          },
+          "note": {
+            "type": "string",
+            "title": "Note",
+            "default": "All ranges labeled 'under stated assumptions'. Changing any assumption can move results outside this range."
+          }
+        },
+        "type": "object",
+        "required": [
+          "grid_intensity_gco2_per_kwh",
+          "pue",
+          "pue_source",
+          "utilization",
+          "utilization_source",
+          "hardware_lifetime_years",
+          "hardware_lifetime_source",
+          "region",
+          "accounting"
+        ],
+        "title": "LedgerAssumptions",
+        "description": "Every assumption that can change a number is documented here.\nThe UI shows this block alongside any result so the user can audit it."
+      },
+      "LedgerEngineConfig": {
+        "properties": {
+          "pue": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pue"
+          },
+          "hardware_lifetime_years": {
+            "type": "number",
+            "title": "Hardware Lifetime Years",
+            "default": 4.0
+          },
+          "utilization": {
+            "type": "number",
+            "title": "Utilization",
+            "default": 1.0
+          },
+          "accounting": {
+            "$ref": "#/components/schemas/AccountingMethod",
+            "default": "location"
+          },
+          "n_mc_samples": {
+            "type": "integer",
+            "title": "N Mc Samples",
+            "default": 1000
+          },
+          "mc_seed": {
+            "type": "integer",
+            "title": "Mc Seed",
+            "default": 42
+          },
+          "requests_per_day": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requests Per Day"
+          }
+        },
+        "type": "object",
+        "title": "LedgerEngineConfig",
+        "description": "Overridable assumptions for the ledger engine.\nDefaults match the recommended values from their respective sources."
+      },
+      "LedgerRequest": {
+        "properties": {
+          "inventory": {
+            "$ref": "#/components/schemas/SystemInventory"
+          },
+          "config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LedgerEngineConfig"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "inventory"
+        ],
+        "title": "LedgerRequest"
+      },
+      "LedgerResponse": {
+        "properties": {
+          "operational": {
+            "$ref": "#/components/schemas/LifecycleLedger-Output"
+          },
+          "full_lifecycle": {
+            "$ref": "#/components/schemas/LifecycleLedger-Output"
+          }
+        },
+        "type": "object",
+        "required": [
+          "operational",
+          "full_lifecycle"
+        ],
+        "title": "LedgerResponse"
+      },
+      "LifecycleLedger-Input": {
+        "properties": {
+          "boundary": {
+            "$ref": "#/components/schemas/Boundary"
+          },
+          "training": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "inference": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "embodied_hardware": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "retraining": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "storage": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "network": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "energy_kwh": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "per_request": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "assumptions": {
+            "$ref": "#/components/schemas/LedgerAssumptions"
+          },
+          "schema_version": {
+            "type": "integer",
+            "title": "Schema Version",
+            "default": 1
+          }
+        },
+        "type": "object",
+        "required": [
+          "boundary",
+          "training",
+          "inference",
+          "embodied_hardware",
+          "retraining",
+          "storage",
+          "network",
+          "energy_kwh",
+          "per_request",
+          "assumptions"
+        ],
+        "title": "LifecycleLedger",
+        "description": "Full or operational carbon/energy ledger for one AI system configuration.\n\nAll component fields are in kg CO2e. energy_kwh is in kWh.\nper_request is in kg CO2e per request."
+      },
+      "LifecycleLedger-Output": {
+        "properties": {
+          "boundary": {
+            "$ref": "#/components/schemas/Boundary"
+          },
+          "training": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "inference": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "embodied_hardware": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "retraining": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "storage": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "network": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "energy_kwh": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "per_request": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "assumptions": {
+            "$ref": "#/components/schemas/LedgerAssumptions"
+          },
+          "schema_version": {
+            "type": "integer",
+            "title": "Schema Version",
+            "default": 1
+          },
+          "total_carbon": {
+            "$ref": "#/components/schemas/Quantity",
+            "description": "Total carbon footprint for this boundary in kgCO2e.",
+            "readOnly": true
+          },
+          "total_energy": {
+            "$ref": "#/components/schemas/Quantity",
+            "description": "Total energy consumption in kWh.",
+            "readOnly": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "boundary",
+          "training",
+          "inference",
+          "embodied_hardware",
+          "retraining",
+          "storage",
+          "network",
+          "energy_kwh",
+          "per_request",
+          "assumptions",
+          "total_carbon",
+          "total_energy"
+        ],
+        "title": "LifecycleLedger",
+        "description": "Full or operational carbon/energy ledger for one AI system configuration.\n\nAll component fields are in kg CO2e. energy_kwh is in kWh.\nper_request is in kg CO2e per request."
+      },
+      "MetadataResponse": {
+        "properties": {
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/ModelPreset"
+            },
+            "type": "array",
+            "title": "Models"
+          },
+          "hardware": {
+            "items": {
+              "$ref": "#/components/schemas/HardwareOption"
+            },
+            "type": "array",
+            "title": "Hardware"
+          },
+          "regions": {
+            "items": {
+              "$ref": "#/components/schemas/RegionOption"
+            },
+            "type": "array",
+            "title": "Regions"
+          },
+          "preset_scenarios": {
+            "items": {
+              "$ref": "#/components/schemas/PresetScenario"
+            },
+            "type": "array",
+            "title": "Preset Scenarios"
+          }
+        },
+        "type": "object",
+        "required": [
+          "models",
+          "hardware",
+          "regions",
+          "preset_scenarios"
+        ],
+        "title": "MetadataResponse"
+      },
+      "ModelPreset": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "family": {
+            "type": "string",
+            "title": "Family"
+          },
+          "params_billions": {
+            "type": "number",
+            "title": "Params Billions"
+          },
+          "precision": {
+            "type": "string",
+            "title": "Precision",
+            "default": "fp16"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "family",
+          "params_billions"
+        ],
+        "title": "ModelPreset"
+      },
+      "ModelSpec": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "family": {
+            "type": "string",
+            "title": "Family",
+            "description": "e.g. 'llama', 'gpt', 'mistral'"
+          },
+          "params_billions": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Params Billions"
+          },
+          "precision": {
+            "type": "string",
+            "enum": [
+              "fp32",
+              "fp16",
+              "bf16",
+              "int8",
+              "int4"
+            ],
+            "title": "Precision",
+            "default": "fp16"
+          },
+          "framework": {
+            "type": "string",
+            "title": "Framework",
+            "default": "pytorch"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "family",
+          "params_billions"
+        ],
+        "title": "ModelSpec"
+      },
+      "ParetoResult": {
+        "properties": {
+          "boundary": {
+            "$ref": "#/components/schemas/Boundary"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/RecommenderCandidate"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "pareto_front_labels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Pareto Front Labels"
+          },
+          "break_even_traffic_requests": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Break Even Traffic Requests"
+          },
+          "winner_operational": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Winner Operational"
+          },
+          "winner_full_lifecycle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Winner Full Lifecycle"
+          },
+          "winner_changed": {
+            "type": "boolean",
+            "title": "Winner Changed",
+            "default": false
+          },
+          "qualifying_candidates_count": {
+            "type": "integer",
+            "title": "Qualifying Candidates Count",
+            "default": 0
+          },
+          "binding_constraint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Binding Constraint"
+          },
+          "rankings_operational": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Rankings Operational",
+            "description": "Ranked candidate labels sorted by operational carbon (lowest to highest)."
+          },
+          "rankings_full_lifecycle": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Rankings Full Lifecycle",
+            "description": "Ranked candidate labels sorted by full lifecycle carbon (lowest to highest)."
+          },
+          "pareto_points_operational": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Pareto Points Operational",
+            "description": "Non-dominated Pareto frontier labels under operational boundary."
+          },
+          "pareto_points_full_lifecycle": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Pareto Points Full Lifecycle",
+            "description": "Non-dominated Pareto frontier labels under full lifecycle boundary."
+          },
+          "break_even_operational_requests": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Break Even Operational Requests",
+            "description": "Break-even request volume under operational boundary."
+          },
+          "break_even_full_lifecycle_requests": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Break Even Full Lifecycle Requests",
+            "description": "Break-even request volume under full lifecycle boundary."
+          }
+        },
+        "type": "object",
+        "required": [
+          "boundary",
+          "candidates",
+          "pareto_front_labels"
+        ],
+        "title": "ParetoResult",
+        "description": "Pareto analysis output for the recommender screen across both boundaries."
+      },
+      "PresetScenario": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "inventory": {
+            "$ref": "#/components/schemas/SystemInventory"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "inventory"
+        ],
+        "title": "PresetScenario"
+      },
+      "Quantity": {
+        "properties": {
+          "value": {
+            "type": "number",
+            "title": "Value"
+          },
+          "low": {
+            "type": "number",
+            "title": "Low"
+          },
+          "high": {
+            "type": "number",
+            "title": "High"
+          },
+          "unit": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Unit"
+          },
+          "tier": {
+            "$ref": "#/components/schemas/Tier"
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Source"
+          },
+          "method_note": {
+            "type": "string",
+            "title": "Method Note",
+            "description": "Short note on how this number was produced.",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "value",
+          "low",
+          "high",
+          "unit",
+          "tier",
+          "source"
+        ],
+        "title": "Quantity",
+        "description": "A single numeric estimate with uncertainty range, provenance, and tier.\n\nInvariants (enforced):\n  - low <= value <= high\n  - unit must be a non-empty string\n  - source must be a non-empty string\n  - tier determines how to display confidence: 'measured' vs 'modeled'\n\nThe range (low, high) is the 5th-to-95th percentile range produced by\nMonte Carlo propagation under stated assumptions (see uncertainty.py).\nAll modeled ranges carry the label \"under stated assumptions\" in the UI."
+      },
+      "ReasonStep": {
+        "properties": {
+          "step": {
+            "type": "integer",
+            "title": "Step"
+          },
+          "check": {
+            "type": "string",
+            "title": "Check"
+          },
+          "result": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail",
+              "warn",
+              "skip"
+            ],
+            "title": "Result"
+          },
+          "evidence": {
+            "type": "string",
+            "title": "Evidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "step",
+          "check",
+          "result",
+          "evidence"
+        ],
+        "title": "ReasonStep"
+      },
+      "RecommendRequest": {
+        "properties": {
+          "inventory": {
+            "$ref": "#/components/schemas/SystemInventory"
+          },
+          "boundary": {
+            "$ref": "#/components/schemas/Boundary",
+            "default": "operational"
+          },
+          "accuracy_floor": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accuracy Floor"
+          }
+        },
+        "type": "object",
+        "required": [
+          "inventory"
+        ],
+        "title": "RecommendRequest"
+      },
+      "RecommenderCandidate": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "description": "Human-readable name, e.g. 'INT8 quantized on A100'."
+          },
+          "inventory": {
+            "$ref": "#/components/schemas/SystemInventory"
+          },
+          "ledger_operational": {
+            "$ref": "#/components/schemas/LifecycleLedger-Output"
+          },
+          "ledger_full": {
+            "$ref": "#/components/schemas/LifecycleLedger-Output"
+          },
+          "accuracy": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accuracy"
+          },
+          "accuracy_source": {
+            "$ref": "#/components/schemas/AccuracySource",
+            "default": "not_available"
+          },
+          "accuracy_source_citation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accuracy Source Citation",
+            "description": "DOI, URL, or dataset name if accuracy_source is 'cited_published_delta'. Dataset split name if 'user_sample_eval'."
+          },
+          "p95_latency_ms": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Quantity"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "latency_constraint_met": {
+            "type": "boolean",
+            "title": "Latency Constraint Met",
+            "default": true
+          },
+          "latency_exclusion_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency Exclusion Reason"
+          },
+          "break_even_requests": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Break Even Requests",
+            "description": "Requests at which this candidate's full-lifecycle cost drops below the baseline operational cost. None if no training overhead."
+          },
+          "cascade_split": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cascade Split",
+            "description": "Fraction of traffic handled by this (small) model in a cascade. Either user-supplied or router-model output."
+          },
+          "cascade_split_source": {
+            "type": "string",
+            "enum": [
+              "user_input",
+              "router_output",
+              "not_applicable"
+            ],
+            "title": "Cascade Split Source",
+            "default": "not_applicable"
+          },
+          "distillation_training_cost_method": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distillation Training Cost Method",
+            "description": "Accounting method and parameters for one-time distillation training run, if applicable."
+          },
+          "distillation_training_carbon": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Quantity"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Modeled one-time distillation training carbon with uncertainty range [low, high]."
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "inventory",
+          "ledger_operational",
+          "ledger_full"
+        ],
+        "title": "RecommenderCandidate",
+        "description": "One architecture candidate evaluated by the recommender."
+      },
+      "RegionOption": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "intensity_gco2_per_kwh": {
+            "type": "number",
+            "title": "Intensity Gco2 Per Kwh"
+          },
+          "year": {
+            "type": "integer",
+            "title": "Year"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name",
+          "intensity_gco2_per_kwh",
+          "year"
+        ],
+        "title": "RegionOption"
+      },
+      "SystemInventory": {
+        "properties": {
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelSpec"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "training": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TrainingConfig"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "inference": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InferenceConfig"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "region": {
+            "type": "string",
+            "title": "Region",
+            "description": "Primary deployment region. Used for grid intensity lookup.",
+            "default": "global"
+          },
+          "retraining_frequency_days": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retraining Frequency Days",
+            "description": "How often the model is retrained. None means no retraining."
+          },
+          "storage_tb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Storage Tb",
+            "description": "Storage footprint in TB (model weights, data, checkpoints)."
+          },
+          "network_requests_per_day": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Network Requests Per Day",
+            "description": "Daily request count for network transfer estimation."
+          },
+          "accuracy_floor": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accuracy Floor",
+            "description": "Minimum acceptable accuracy (0-1). Recommender excludes configs below this."
+          },
+          "distillation_training_hours": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distillation Training Hours",
+            "description": "Customizable distillation training run hours (default 50.0h)."
+          },
+          "note": {
+            "type": "string",
+            "title": "Note",
+            "description": "Free-text notes from config parser.",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "title": "SystemInventory",
+        "description": "Structured description of an AI system to audit.\n\nFields not present in a parsed config file stay None and are shown\nto the user as 'please confirm' in the UI."
+      },
+      "Tier": {
+        "type": "string",
+        "enum": [
+          "measured",
+          "modeled"
+        ],
+        "title": "Tier",
+        "description": "Whether the number came from direct measurement or computation."
+      },
+      "TrainingConfig": {
+        "properties": {
+          "gpu": {
+            "$ref": "#/components/schemas/GPUSpec"
+          },
+          "duration_hours": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Duration Hours"
+          },
+          "pue": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pue",
+            "description": "Override datacenter PUE for training."
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region",
+            "description": "Override region for training grid intensity."
+          },
+          "n_epochs": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "N Epochs",
+            "default": 1
+          }
+        },
+        "type": "object",
+        "required": [
+          "gpu",
+          "duration_hours"
+        ],
+        "title": "TrainingConfig"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "Verdict": {
+        "properties": {
+          "label": {
+            "$ref": "#/components/schemas/VerdictLabel"
+          },
+          "resolved_by": {
+            "type": "string",
+            "enum": [
+              "rules",
+              "classifier",
+              "llm"
+            ],
+            "title": "Resolved By"
+          },
+          "reason_chain": {
+            "items": {
+              "$ref": "#/components/schemas/ReasonStep"
+            },
+            "type": "array",
+            "title": "Reason Chain"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence",
+            "description": "Confidence [0,1]. None means the check is deterministic."
+          },
+          "schema_version": {
+            "type": "integer",
+            "title": "Schema Version",
+            "default": 1
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "resolved_by",
+          "reason_chain"
+        ],
+        "title": "Verdict"
+      },
+      "VerdictLabel": {
+        "type": "string",
+        "enum": [
+          "supported",
+          "contradicted",
+          "suspicious_boundary_shift",
+          "insufficient_evidence"
+        ],
+        "title": "VerdictLabel"
+      }
+    }
+  }
+}

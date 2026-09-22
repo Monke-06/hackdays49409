@@ -1,0 +1,101 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--motion-duration-fast) var(--motion-ease-default),
+              border-color var(--motion-duration-fast) var(--motion-ease-default),
+              color var(--motion-duration-fast) var(--motion-ease-default);
+  white-space: nowrap;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Variants */
+.primary {
+  background-color: var(--color-action-primary);
+  color: var(--color-action-primary-text);
+  border-color: var(--color-action-primary);
+}
+
+.primary:hover:not(:disabled) {
+  background-color: var(--color-action-primary-hover);
+  border-color: var(--color-action-primary-hover);
+}
+
+.primary:active:not(:disabled) {
+  background-color: var(--color-action-primary-active);
+}
+
+.secondary {
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-default);
+}
+
+.secondary:hover:not(:disabled) {
+  background-color: var(--color-bg-subtle);
+  border-color: var(--color-border-strong);
+}
+
+.secondary:active:not(:disabled) {
+  background-color: var(--color-bg-muted);
+}
+
+.danger {
+  background-color: var(--color-action-danger-bg);
+  color: var(--color-action-danger-text);
+  border-color: var(--color-action-danger-bg);
+}
+
+.danger:hover:not(:disabled) {
+  background-color: var(--color-action-danger-hover);
+  border-color: var(--color-action-danger-hover);
+}
+
+.ghost {
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  border-color: transparent;
+}
+
+.ghost:hover:not(:disabled) {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+}
+
+/* Sizes */
+.sm {
+  font-size: var(--font-size-xs);
+  padding: var(--space-1) var(--space-3);
+  height: 28px;
+}
+
+.md {
+  font-size: var(--font-size-sm);
+  padding: var(--space-2) var(--space-4);
+  height: 36px;
+}
+
+.lg {
+  font-size: var(--font-size-base);
+  padding: var(--space-3) var(--space-6);
+  height: 44px;
+}
+
+/* Disabled */
+.button:disabled {
+  background-color: var(--color-action-disabled-bg);
+  border-color: var(--color-action-disabled-border);
+  color: var(--color-action-disabled-text);
+  cursor: not-allowed;
+}
